@@ -94,7 +94,7 @@ namespace scePa
             //Patch flag to load animation info.
             var clafn = hs.Methods.First(x => x.Name == "CreateListAnimationFileName");
             var clafn_ilp = clafn.Body.GetILProcessor();
-            var clafn_flag3 = clafn.Body.Instructions[686]; //bool flag3 = false -> true
+            var clafn_flag3 = clafn.Body.Instructions[692]; //bool flag3 = false -> true
             if (clafn_flag3.OpCode.ToString() == "ldc.i4.0")
             {
                 clafn_flag3.OpCode = OpCodes.Ldc_I4_1;
