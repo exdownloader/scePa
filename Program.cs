@@ -65,6 +65,35 @@ namespace scePa
             }
 
             var md = ModuleDefinition.ReadModule(backup, parameters);
+
+            //Remove events
+            var adv = md.GetType("Manager.ADV");
+            var cex = adv.Methods;
+            var ce = adv.Methods.First((MethodDefinition x) => x.Name == "CheckEvent" && x.ReturnType.FullName.ToString() == "System.Int32");
+            var ce_ilp = ce.Body.GetILProcessor();
+            var ce_first = ce.Body.Instructions[0];
+            if (ce_first.OpCode.ToString() != "ldc.i4.m1")
+            {
+                ce.Body.Instructions.Clear();
+                ce_ilp.Emit(OpCodes.Ldc_I4_M1);
+                ce_ilp.Emit(OpCodes.Ret);
+                Console.WriteLine("Patched CheckEvent");
+            }
+
+            //Remove events
+            var ce2 = adv.Methods.First((MethodDefinition x) => x.Name == "CheckEvent" && x.ReturnType.FullName.ToString() == "System.Boolean" && x.Parameters.Count == 4);
+            var ce2_ilp = ce2.Body.GetILProcessor();
+            var ce2_first = ce2.Body.Instructions[0];
+            if (ce2_first.OpCode.ToString() != "ldc.i4.0")
+            {
+                ce2.Body.ExceptionHandlers.Clear();
+                ce2.Body.Variables.Clear();
+                ce2.Body.Instructions.Clear();
+                ce2_ilp.Emit(OpCodes.Ldc_I4_0);
+                ce2_ilp.Emit(OpCodes.Ret);
+                Console.WriteLine("Patched CheckEvent");
+            }
+
             var hs = md.GetType("HScene");
 
             //Remove state animation filter.
