@@ -11,9 +11,7 @@ namespace scePa
     {
         static void Main(string[] args)
         {
-            var baseDir = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Illusion\\HoneySelect\\", "INSTALLDIR", -1).ToString();
-            if (baseDir == "-1") return;
-            var di_base = new DirectoryInfo(baseDir);
+            var di_base = new DirectoryInfo(Environment.CurrentDirectory);
             if (!di_base.Exists) return;
             var path32 = Path.Combine(di_base.FullName, "HoneySelect_32_Data", "Managed", "Assembly-CSharp.dll");
             var path64 = Path.Combine(di_base.FullName, "HoneySelect_64_Data", "Managed", "Assembly-CSharp.dll");
